@@ -13,7 +13,8 @@ services:
     networks:
       - my-budget-store
 
-  api-gateway:
+  my-bud-api-gateway:
+    container_name: my-bud-api-gateway
     build: my-bud-api-gateway/src/MyBud.ApiGateway
     ports:
       - 7101:443
@@ -29,6 +30,7 @@ services:
       - my-budget-store
 
   identity-server-api:
+    container_name: identity-server-api
     build: identityserver/src/MyBud.IdentityServer
     ports:
       - 7121:443
@@ -41,9 +43,10 @@ services:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets
       - ${USERPROFILE}/.aspnet/https:/root/.aspnet/https
     networks:
-      - my-budget-store
+      - my-budget-store 
 
   products-api:
+    container_name: products-api
     build: products-api/src/MyBud.ProductsApi
     ports:
       - 7182:443
