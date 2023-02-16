@@ -31,7 +31,7 @@ services:
 
   identity-server-api:
     container_name: identity-server-api
-    build: identityserver/src/MyBud.IdentityServer
+    build: identity-server-api/src/MyBud.IdentityServer
     ports:
       - 7121:443
       - 5121:80
