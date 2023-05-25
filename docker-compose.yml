@@ -1,4 +1,4 @@
-version: '3.4'
+version: "3.4"
 
 services:
   postgres:
@@ -9,29 +9,13 @@ services:
       POSTGRES_USER: dev
       POSTGRES_PASSWORD: Password7!
     ports:
-      - 5432:5432
-    networks:
-      - my-budget-store
-
-  my-bud-api-gateway:
-    container_name: my-bud-api-gateway
-    build: my-bud-api-gateway/src/MyBud.ApiGateway
-    ports:
-      - 7101:443
-      - 5101:80
-    environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      ASPNETCORE_HTTPS_PORT: 7101
-      ASPNETCORE_URLS: "https://+;http://+"
-    volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets
-      - ${USERPROFILE}/.aspnet/Https:/root/.aspnet/https
+      - 5433:5432
     networks:
       - my-budget-store
 
   identity-server-api:
     container_name: identity-server-api
-    build: identity-server-api/src/MyBud.IdentityServer
+    build: ../identity-server-api/src/MyBud.IdentityServer
     ports:
       - 7121:443
       - 5121:80
@@ -39,15 +23,16 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_HTTPS_PORT: 7121
       ASPNETCORE_URLS: "https://+;http://+"
+    restart: always
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets
       - ${USERPROFILE}/.aspnet/https:/root/.aspnet/https
     networks:
-      - my-budget-store 
+      - my-budget-store
 
   products-api:
     container_name: products-api
-    build: products-api/src/MyBud.ProductsApi
+    build: ../products-api/src/MyBud.ProductsApi
     ports:
       - 7182:443
       - 5182:80
@@ -55,6 +40,24 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_HTTPS_PORT: 7182
       ASPNETCORE_URLS: "https://+;http://+"
+    restart: always
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets
+      - ${USERPROFILE}/.aspnet/Https:/root/.aspnet/https
+    networks:
+      - my-budget-store
+
+  my-bud-api-gateway:
+    container_name: my-bud-api-gateway
+    build: ../my-bud-api-gateway/src/MyBud.ApiGateway
+    ports:
+      - 7101:443
+      - 5101:80
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTPS_PORT: 7101
+      ASPNETCORE_URLS: "https://+;http://+"
+    restart: always
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets
       - ${USERPROFILE}/.aspnet/Https:/root/.aspnet/https
